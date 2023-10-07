@@ -1,0 +1,26 @@
+class Solution {
+    public int[] maxSlidingWindow(int[] arr, int k) {
+        
+        PriorityQueue<Integer> pq = new PriorityQueue<>(k, Collections.reverseOrder());
+        int n = arr.length;
+        int res[] = new int[n-k+1];
+
+        for(int i=0;i<k;i++){
+            pq.add(arr[i]);
+        }
+
+        int l=0,r=k-1;
+        int i=0;
+        while(r<n){
+            res[i] = pq.peek();
+            pq.remove(arr[l]);            
+            l++;
+            r++;
+            i++;
+            if(r<n) pq.add(arr[r]);
+        }
+
+        return res;
+        
+    }
+}
