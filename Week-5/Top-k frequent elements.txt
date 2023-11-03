@@ -1,0 +1,45 @@
+class Solution {
+    public int[] topKFrequent(int[] arr, int k) {
+       /*
+            arr.length ~ 10^5.  
+            time complexity can go uptil nlog(n)
+
+            populate a map (number, frequency) -> O(n)
+            We can sort using bucket sort
+        */ 
+
+        int n = arr.length;
+        Map<Integer,Integer> map = new HashMap<>();
+        for(int i=0;i<n;i++){
+            if(map.get(arr[i])==null)   map.put(arr[i],1);
+            else                        map.put(arr[i], map.get(arr[i])+1);
+        }
+
+        List<Integer> bucket[] = new List[n+1];
+
+        for(Map.Entry<Integer,Integer> entry: map.entrySet()){
+            int freq = entry.getValue();
+            if(bucket[freq]==null){
+                List<Integer> list = new ArrayList<>();
+                list.add(entry.getKey());
+                bucket[freq] = list;
+            }else{
+                bucket[freq].add(entry.getKey());
+            }
+        }
+
+        int cnt=0;
+        int res[] = new int[k];
+        for(int i=n;i>=0 && cnt<k;i--){
+            if(bucket[i]!=null){
+                for(int j=0;j<bucket[i].size() && cnt<k;j++){
+                    res[cnt] = bucket[i].get(j);
+                    cnt++;   
+                }
+            }            
+        }
+
+        return res;
+
+    }
+}
